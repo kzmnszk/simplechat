@@ -110,7 +110,7 @@ def lambda_handler(event, context):
         # })
 
 
-        url = 'https://2a04-34-125-150-83.ngrok-free.app/generate'
+        url = 'https://98c7-34-125-150-83.ngrok-free.app/generate'
 
         request_body = {
             'prompt': messages,
