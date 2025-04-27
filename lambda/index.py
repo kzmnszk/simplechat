@@ -81,14 +81,14 @@ def lambda_handler(event, context):
             }
         }
         
-        print("Calling Bedrock invoke_model API with payload:", json.dumps(request_payload))
+        # print("Calling Bedrock invoke_model API with payload:", json.dumps(request_payload))
         
-        # invoke_model APIを呼び出し
-        response = bedrock_client.invoke_model(
-            modelId=MODEL_ID,
-            body=json.dumps(request_payload),
-            contentType="application/json"
-        )
+        # # invoke_model APIを呼び出し
+        # response = bedrock_client.invoke_model(
+        #     modelId=MODEL_ID,
+        #     body=json.dumps(request_payload),
+        #     contentType="application/json"
+        # )
 
         request_url = 'https://6471-35-202-192-206.ngrok-free.app/generate'
 
@@ -100,10 +100,9 @@ def lambda_handler(event, context):
         request_body = {
             'prompt': messages,
             'max_new_tokens':512,
-            'do_sample': true,
+            'do_sample': 'true',
             'temperature':0.7,
             'top_p':0.9,
-
         }
 
         print("POSTing this body to external LLM:", json.dumps(request_body))
