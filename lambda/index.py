@@ -125,7 +125,8 @@ def lambda_handler(event, context):
         print("endpoint:", url)
         print("POSTing this body to external LLM:", data)
 
-        response = urllib.request.Request(
+        # リクエストの作成
+        request = urllib.request.Request(
             url=url,
             data=data,
             headers={
@@ -134,57 +135,58 @@ def lambda_handler(event, context):
             },
             method='POST',
         )
-        print('posted request.')
-        print('response:', response)
-        # print('response:', json.dumps(response))
+        print('response:', request)
 
-        # レスポンスを解析
-        response_body = json.loads(response['generated_text'].read())
-        print("LLM response:", json.dumps(response_body, default=str))
+        # レスポンスの確認
+        with urllib.request.urlopen(request) as response:
+            response_data = response.read()
+            print(f'response_data: {response_data}')
+            response_json = json.loads(response_data.decode('utf-8'))
+            print(f'response_json: {response_json}')
+            generated_text = response_json.get('generated_text')
+            print(f'response_json: {response_json}')
 
-        response_time = json.loads(response['response_time'].read())
-        print("Time passed:", json.dumps(response_time, default=str))
 
-        # 応答の検証
-        if not response_body.get('output') or not response_body['output'].get('message') or not response_body['output']['message'].get('content'):
-            raise Exception("No response content from the model")
+    #     # 応答の検証
+    #     if not response_body.get('output') or not response_body['output'].get('message') or not response_body['output']['message'].get('content'):
+    #         raise Exception("No response content from the model")
         
-        # アシスタントの応答を取得
-        assistant_response = response_body['output']['message']['content'][0]['text']
+    #     # アシスタントの応答を取得
+    #     assistant_response = response_body['output']['message']['content'][0]['text']
         
         
-        # 成功レスポンスの返却
-        return {
-            "statusCode": 200,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
-                "Access-Control-Allow-Methods": "OPTIONS,POST"
-            },
-            "body": json.dumps({
-                "success": True,
-                "response": assistant_response,
-                # "conversationHistory": messages
-            })
-        }
+    #     # 成功レスポンスの返却
+    #     return {
+    #         "statusCode": 200,
+    #         "headers": {
+    #             "Content-Type": "application/json",
+    #             "Access-Control-Allow-Origin": "*",
+    #             "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+    #             "Access-Control-Allow-Methods": "OPTIONS,POST"
+    #         },
+    #         "body": json.dumps({
+    #             "success": True,
+    #             "response": assistant_response,
+    #             # "conversationHistory": messages
+    #         })
+    #     }
         
-    except Exception as error:
-        print("Error:", str(error))
+    # except Exception as error:
+    #     print("Error:", str(error))
         
-        return {
-            "statusCode": 500,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
-                "Access-Control-Allow-Methods": "OPTIONS,POST"
-            },
-            "body": json.dumps({
-                "success": False,
-                "error": str(error)
-            })
-        }
+    #     return {
+    #         "statusCode": 500,
+    #         "headers": {
+    #             "Content-Type": "application/json",
+    #             "Access-Control-Allow-Origin": "*",
+    #             "Access-Control-Allow-Headers": "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+    #             "Access-Control-Allow-Methods": "OPTIONS,POST"
+    #         },
+    #         "body": json.dumps({
+    #             "success": False,
+    #             "error": str(error)
+    #         })
+    #     }
 
     # # リクエストの送信と応答の取得
     # try:
