@@ -92,7 +92,7 @@ def lambda_handler(event, context):
         #     contentType="application/json"
         # )
 
-        url = 'https://6471-35-202-192-206.ngrok-free.app/generate'
+        url = 'https://a3b4-34-143-210-44.ngrok-free.app/generate'
 
         request_body = {
             'prompt': message,
