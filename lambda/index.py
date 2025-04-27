@@ -89,14 +89,16 @@ def lambda_handler(event, context):
         #     body=json.dumps(request_payload),
         #     contentType="application/json"
         # )
-
+        data = json.dumps(request_payload)
+        print(data)
         API_ENDPOINT = 'https://bdfc-34-125-174-186.ngrok-free.app/generate'
         response = urllib.request.Request(
             url=API_ENDPOINT,
+
             data=json.dumps(request_payload),
             headers={
+                'accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
             },            
             method='POST',
     )
