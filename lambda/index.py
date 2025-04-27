@@ -92,6 +92,24 @@ def lambda_handler(event, context):
         #     contentType="application/json"
         # )
 
+        # # レスポンスを解析
+        # response_body = json.loads(response['body'].read())
+        # print("Bedrock response:", json.dumps(response_body, default=str))
+        
+        # # 応答の検証
+        # if not response_body.get('output') or not response_body['output'].get('message') or not response_body['output']['message'].get('content'):
+        #     raise Exception("No response content from the model")
+        
+        # # アシスタントの応答を取得
+        # assistant_response = response_body['output']['message']['content'][0]['text']
+        
+        # # アシスタントの応答を会話履歴に追加
+        # messages.append({
+        #     "role": "assistant",
+        #     "content": assistant_response
+        # })
+
+
         url = 'https://1edc-34-143-210-44.ngrok-free.app/generate'
 
         request_body = {
@@ -104,6 +122,7 @@ def lambda_handler(event, context):
 
         data = json.dumps(request_body).encode('utf-8')
 
+        print("endpoint:", url)
         print("POSTing this body to external LLM:", data)
 
         response = urllib.request.Request(
@@ -114,12 +133,16 @@ def lambda_handler(event, context):
                 'Accept': 'application/json',
             },
             method='POST',
-    )
+        )
+        print('posted request.')
 
         # レスポンスを解析
-        response_body = json.loads(response['body'].read())
-        print("Bedrock response:", json.dumps(response_body, default=str))
-        
+        response_body = json.loads(response['generated_text'].read())
+        print("LLM response:", json.dumps(response_body, default=str))
+
+        response_time = json.loads(response['response_time'].read())
+        print("Time passed:", json.dumps(response_time, default=str))
+
         # 応答の検証
         if not response_body.get('output') or not response_body['output'].get('message') or not response_body['output']['message'].get('content'):
             raise Exception("No response content from the model")
@@ -127,11 +150,6 @@ def lambda_handler(event, context):
         # アシスタントの応答を取得
         assistant_response = response_body['output']['message']['content'][0]['text']
         
-        # # アシスタントの応答を会話履歴に追加
-        # messages.append({
-        #     "role": "assistant",
-        #     "content": assistant_response
-        # })
         
         # 成功レスポンスの返却
         return {
