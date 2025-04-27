@@ -48,14 +48,14 @@ def lambda_handler(event, context):
         print('conversation_history:', conversation_history)
         print("Using model:", MODEL_ID)
         
-        # # 会話履歴を使用
-        # messages = conversation_history.copy()
+        # 会話履歴を使用
+        messages = conversation_history.copy()
         
-        # # ユーザーメッセージを追加
-        # messages.append({
-        #     "role": "user",
-        #     "content": message
-        # })
+        # ユーザーメッセージを追加
+        messages.append({
+            "role": "user",
+            "content": message
+        })
         
         # # Nova Liteモデル用のリクエストペイロードを構築
         # # 会話履歴を含める
@@ -110,10 +110,10 @@ def lambda_handler(event, context):
         # })
 
 
-        url = 'https://1edc-34-143-210-44.ngrok-free.app/generate'
+        url = 'https://2a04-34-125-150-83.ngrok-free.app/generate'
 
         request_body = {
-            'prompt': message,
+            'prompt': messages,
             'max_new_tokens': 512,
             'do_sample': True,
             'temperature': 0.7,
@@ -140,11 +140,11 @@ def lambda_handler(event, context):
         # レスポンスの確認
         with urllib.request.urlopen(request) as response:
             response_data = response.read()
-            print(f'response_data: {response_data}')
             response_json = json.loads(response_data.decode('utf-8'))
-            print(f'response_json: {response_json}')
             generated_text = response_json.get('generated_text')
+
             print(f'response_json: {response_json}')
+            print(f'generated_text: {generated_text}')
 
         # 成功レスポンスの返却
         return {
