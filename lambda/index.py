@@ -135,7 +135,8 @@ def lambda_handler(event, context):
             method='POST',
         )
         print('posted request.')
-        print('response:', json.dumps(response))
+        print('response:', response)
+        # print('response:', json.dumps(response))
 
         # レスポンスを解析
         response_body = json.loads(response['generated_text'].read())
