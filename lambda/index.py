@@ -89,20 +89,31 @@ def lambda_handler(event, context):
             body=json.dumps(request_payload),
             contentType="application/json"
         )
-    #     data = json.dumps(request_payload)
-    #     print(data)
-    #     API_ENDPOINT = 'https://bdfc-34-125-174-186.ngrok-free.app/generate'
-    #     response = urllib.request.Request(
-    #         url=API_ENDPOINT,
 
-    #         data=json.dumps(request_payload),
-    #         headers={
-    #             'accept': 'application/json',
-    #             'Content-Type': 'application/json',
-    #         },            
-    #         method='POST',
-    # )
+        request_url = 'https://6471-35-202-192-206.ngrok-free.app/generate'
 
+        request_header = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+        }
+
+        request_body = {
+            'prompt': messages,
+            'max_new_tokens':512,
+            'do_sample': true,
+            'temperature':0.7,
+            'top_p':0.9,
+
+        }
+
+        print("POSTing this body to external LLM:", json.dumps(request_body))
+
+        response = urllib.request.Request(
+            url=request_url,
+            headers=request_header,
+            data=json.dumps(request_body),
+            method='POST',
+    )
 
         # レスポンスを解析
         response_body = json.loads(response['body'].read())
