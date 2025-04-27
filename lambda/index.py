@@ -43,7 +43,9 @@ def lambda_handler(event, context):
         message = body['message']
         conversation_history = body.get('conversationHistory', [])
         
-        print("Processing message:", message)
+        print('body:', body)
+        print('message:', message)
+        print('conversation_history:', conversation_history)
         print("Using model:", MODEL_ID)
         
         # 会話履歴を使用
