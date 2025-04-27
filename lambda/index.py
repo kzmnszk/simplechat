@@ -48,8 +48,8 @@ def lambda_handler(event, context):
         print('conversation_history:', conversation_history)
         print("Using model:", MODEL_ID)
         
-        # 会話履歴を使用
-        messages = conversation_history.copy()
+        # # 会話履歴を使用
+        # messages = conversation_history.copy()
         
         # # ユーザーメッセージを追加
         # messages.append({
@@ -92,27 +92,27 @@ def lambda_handler(event, context):
         #     contentType="application/json"
         # )
 
-        request_url = 'https://6471-35-202-192-206.ngrok-free.app/generate'
-
-        request_header = {
-            'accept': 'application/json',
-            'Content-Type': 'application/json',
-        }
+        url = 'https://6471-35-202-192-206.ngrok-free.app/generate'
 
         request_body = {
             'prompt': messages,
-            'max_new_tokens':512,
-            'do_sample': 'true',
-            'temperature':0.7,
-            'top_p':0.9,
+            'max_new_tokens': 512,
+            'do_sample': True,
+            'temperature': 0.7,
+            'top_p': 0.9,
         }
 
-        print("POSTing this body to external LLM:", json.dumps(request_body))
+        data = json.dumps(request_body).encode('utf-8')
+
+        print("POSTing this body to external LLM:", data)
 
         response = urllib.request.Request(
-            url=request_url,
-            headers=request_header,
-            data=json.dumps(request_body),
+            url=url,
+            data=data,
+            headers={
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
             method='POST',
     )
 
