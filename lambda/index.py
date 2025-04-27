@@ -90,7 +90,7 @@ def lambda_handler(event, context):
         #     contentType="application/json"
         # )
 
-        API_ENDPOINT = 'https://036c-34-125-174-186.ngrok-free.app/generate'
+        API_ENDPOINT = 'https://bdfc-34-125-174-186.ngrok-free.app/generate'
         response = urllib.request.Request(
             url=API_ENDPOINT,
             data=json.dumps(request_payload),
