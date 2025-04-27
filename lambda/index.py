@@ -84,24 +84,24 @@ def lambda_handler(event, context):
         print("Calling Bedrock invoke_model API with payload:", json.dumps(request_payload))
         
         # invoke_model APIを呼び出し
-        # response = bedrock_client.invoke_model(
-        #     modelId=MODEL_ID,
-        #     body=json.dumps(request_payload),
-        #     contentType="application/json"
-        # )
-        data = json.dumps(request_payload)
-        print(data)
-        API_ENDPOINT = 'https://bdfc-34-125-174-186.ngrok-free.app/generate'
-        response = urllib.request.Request(
-            url=API_ENDPOINT,
+        response = bedrock_client.invoke_model(
+            modelId=MODEL_ID,
+            body=json.dumps(request_payload),
+            contentType="application/json"
+        )
+    #     data = json.dumps(request_payload)
+    #     print(data)
+    #     API_ENDPOINT = 'https://bdfc-34-125-174-186.ngrok-free.app/generate'
+    #     response = urllib.request.Request(
+    #         url=API_ENDPOINT,
 
-            data=json.dumps(request_payload),
-            headers={
-                'accept': 'application/json',
-                'Content-Type': 'application/json',
-            },            
-            method='POST',
-    )
+    #         data=json.dumps(request_payload),
+    #         headers={
+    #             'accept': 'application/json',
+    #             'Content-Type': 'application/json',
+    #         },            
+    #         method='POST',
+    # )
 
 
         # レスポンスを解析
