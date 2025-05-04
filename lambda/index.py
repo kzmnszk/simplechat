@@ -60,7 +60,7 @@ def lambda_handler(event, context):
         url = 'https://8d3a-34-125-143-243.ngrok-free.app/generate'
 
         request_body = {
-            'prompt': json.dumps(messages),
+            'prompt': json.dumps(message),
             'max_new_tokens': 512,
             'do_sample': True,
             'temperature': 0.7,
